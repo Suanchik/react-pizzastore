@@ -1,11 +1,11 @@
 import React from 'react';
 import { Header, Home, Cart } from './components/Exports';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { HashRouter, Route } from 'react-router-dom';
 
 const App = () => {
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className="wrapper">
         <Header/>
         <div className="content">
@@ -14,7 +14,7 @@ const App = () => {
           <Route path="/home" render={() => <Home/>}/>
         </div>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
