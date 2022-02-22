@@ -7,7 +7,6 @@ function CardItem({ name, type, size, price, imageUrl, totalPrice, pizzaLength, 
 
     const dispatch = useDispatch();
 
-
     const removePizza = () => {
         if (window.confirm('Вы действительно хотите удалить пиццу?')) {
             dispatch(removedCartItem(id))

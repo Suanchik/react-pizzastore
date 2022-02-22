@@ -1,7 +1,7 @@
 let initial = {
-    items: {},
-    totalPrice: 0,
-    totalCount: 0
+    items: localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : {},
+    totalPrice: localStorage.getItem('items') ? JSON.parse(localStorage.getItem('totalPrice')) : 0,
+    totalCount: localStorage.getItem('items') ? JSON.parse(localStorage.getItem('totalCount')) : 0
 }
 
 const getTTPrice = arr => arr.reduce((total, el) => {return total + el.price}, 0);
@@ -19,13 +19,21 @@ const card = (state = initial, action) => {
                     totalPrice: getTTPrice(currentPizzas)
                 }
             }
-            return {
+            const newstate = {
                 ...state,
                 items: newItems,
                 totalCount: Object.keys(newItems).reduce((sum, key)=>newItems[key].items.length + sum,0),
                 totalPrice: Object.keys(newItems).reduce((sum, key)=>newItems[key].totalPrice + sum,0)
             }
+            localStorage.setItem('items', JSON.stringify(newItems));
+            localStorage.setItem('totalCount', JSON.stringify(Object.keys(newItems).reduce((sum, key)=>newItems[key].items.length + sum,0)));
+            localStorage.setItem('totalPrice', JSON.stringify(Object.keys(newItems).reduce((sum, key)=>newItems[key].totalPrice + sum,0)));
+            return newstate
+
         case 'CLEAR_CART':
+            localStorage.removeItem('items');
+            localStorage.removeItem('totalCount');
+            localStorage.removeItem('totalPrice');
             return {
                 items: {},
                 totalPrice: 0,
@@ -38,7 +46,10 @@ const card = (state = initial, action) => {
             const currentTotalPrice = itemsCopy[action.id].totalPrice;
             delete itemsCopy[action.id];
             let restItems = Object.values(itemsCopy).map(obj => obj.items)
-            console.log(restItems)
+     
+            localStorage.setItem('items', JSON.stringify(itemsCopy));
+            localStorage.setItem('totalCount', JSON.stringify([].concat.apply([], restItems).length));
+            localStorage.setItem('totalPrice', JSON.stringify(state.totalPrice - currentTotalPrice));
             return {
                 ...state,
                 items: itemsCopy,
@@ -54,6 +65,9 @@ const card = (state = initial, action) => {
                     totalPrice: getTTPrice(itemsNew)
                 }
             }
+            localStorage.setItem('items', JSON.stringify(newItems));
+            localStorage.setItem('totalCount', JSON.stringify(Object.keys(newItems).reduce((sum, key)=>newItems[key].items.length + sum,0)));
+            localStorage.setItem('totalPrice', JSON.stringify(Object.keys(newItems).reduce((sum, key)=>newItems[key].totalPrice + sum,0)));
             return {
                 ...state,
                 items: newItems,
@@ -71,6 +85,9 @@ const card = (state = initial, action) => {
                     totalPrice: getTTPrice(itemsNew)
                 }
             }
+            localStorage.setItem('items', JSON.stringify(newItems));
+            localStorage.setItem('totalCount', JSON.stringify(Object.keys(newItems).reduce((sum, key)=>newItems[key].items.length + sum,0)));
+            localStorage.setItem('totalPrice', JSON.stringify(Object.keys(newItems).reduce((sum, key)=>newItems[key].totalPrice + sum,0)));
             return {
                 ...state,
                 items: newItems,

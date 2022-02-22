@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { clearCart } from '../redux/actionsCreaters/card';
+import { addItemsFromLocal, clearCart } from '../redux/actionsCreaters/card';
 import CardItem from './cardItem';
 import cartIMG from '../../assets/img/empty-cart.png'
 
@@ -9,7 +9,7 @@ function Cart() {
     const dispatch = useDispatch();
     const { totalPrice, totalCount, items } = useSelector(({ cardPage }) => cardPage);
 
-    console.log(items)
+
 
     let addedPizzas = Object.keys(items).map(p => {
         return items[p].items[0]
